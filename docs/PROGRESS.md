@@ -1,7 +1,7 @@
 # RH CARTOON STUDIO — PROGRESS LOG
 
 Terakhir diperbarui: 2026-11-23 (Sesi 1)
-Status: **Engine Remotion terintegrasi di branch `v4`. Belum di-push, belum dijalankan di GitHub Actions. Belum ada MP4 yang diuji.**
+Status: **`v4` sudah di-push. Preview Short 8 detik berhasil dirender di GitHub Actions dan lulus QA otomatis (run 45106259514). Render penuh Short/Long belum dilakukan. Isi visual belum diperiksa manusia/Claude.**
 
 ## Repositori
 - Repo kerja: `rudy8965/Cartoon699` (README: "Cartoon-Studio"). `rudy8965/Cartoon-Studio` → 404 tanpa login.
@@ -39,3 +39,18 @@ Status: **Engine Remotion terintegrasi di branch `v4`. Belum di-push, belum dija
 1. Push `v4`. Workflow "Render Episode (Remotion)" jalan otomatis (preview Short).
 2. Kirim hasil/log; perbaiki error; unduh artifact; jalankan QA.
 3. Jika hijau: jalankan Short penuh, lalu Long.
+
+## Hasil Actions (sesi 1)
+- Run 1 (`35e1f1b`) & 2 (`07a298e`): gagal di Render. Penyebab: runner tanpa GPU, `THREE.WebGLRenderer: Error creating WebGL context` (config `angle` butuh GPU).
+- Perbaikan: `--gl=swangle --concurrency=2` di `render-episode.yml`.
+- Run 3 (`0775c11`): **sukses**. Render 240 frame ±21 menit (±5,2 dtk/frame). Artifact `episode-Short` 10,8 MB; QA lulus (1080x1920, h264, 8,0 s, audio ada).
+- Estimasi render penuh pada kecepatan itu: Short ±1.961 frame ≈ 2,8 jam; Long ±3.800 frame ≈ 5,5 jam (mendekati batas 350 menit) → perlu render paralel per rentang frame (matrix job) + gabung FFmpeg.
+- Log mentah & artifact tidak bisa diunduh dari sandbox (blob.core.windows.net diblokir). Diagnosa lewat annotation (`render-log-tail`) dan gambar kontak 12 frame di branch `previews`.
+
+## TODO berikutnya
+1. Periksa gambar kontak di branch `previews` (visual preview).
+2. Render paralel (matrix frame range) + `ffmpeg concat` + QA durasi = VO.
+3. Render Short penuh, lalu Long; QA lulus; unduh MP4.
+4. Uji `regenerate_audio` (Kokoro) di Actions.
+5. Gaya referensi: terima klip referensi, `measure.py`, `styles/<nama>.md`, cocokkan still.
+6. Cabut token GitHub setelah selesai (pemilik).

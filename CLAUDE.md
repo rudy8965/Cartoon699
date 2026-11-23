@@ -8,3 +8,6 @@ The workflow is the skill in `.claude/skills/animated-shorts/SKILL.md`. Read it 
 - Long version (16:9): composition `Long`.
 - Always check stills before rendering: `node scripts/stills.mjs <shot ids>`.
 - New video, new chat.
+
+## Project brief & progress
+Baca `docs/BRIEF.md` (aturan & keputusan pemilik) dan `docs/PROGRESS.md` (status terkini) sebelum bekerja. Jangan pernah menyimpan token/kredensial di repo.

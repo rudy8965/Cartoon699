@@ -21,9 +21,10 @@ on:
         default: false
   push:
     branches: [v4]
+    paths-ignore: ['docs/**', '**.md']
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   render:
@@ -74,6 +75,14 @@ jobs:
           MODE=shorts; [ "$COMP" = "Long" ] || [ "$COMP" = "Short16x9" ] && MODE=long
           if [ "$PREVIEW" = "true" ]; then EXP=8.0; else EXP=$(python3 tools/expected_duration.py "$COMP"); fi
           python3 tools/qa.py "$OUT_FILE" --mode "$MODE" --expect-duration "$EXP" --require-audio
+      - name: Contact sheet (12 frames) to previews branch
+        continue-on-error: true
+        run: |
+          ffmpeg -v error -y -i "$OUT_FILE" -vf "fps=1.5,scale=360:-1,tile=6x2" -frames:v 1 out/contact.jpg
+          D=$(mktemp -d); cp out/contact.jpg "$D/${COMP}.jpg"; cd "$D"
+          git init -q; git checkout -q -b previews; git add .
+          git -c user.name=github-actions -c user.email=actions@users.noreply.github.com commit -qm "preview ${GITHUB_SHA}"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" previews
       - name: Upload MP4
         uses: actions/upload-artifact@v4
         with:

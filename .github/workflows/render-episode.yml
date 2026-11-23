@@ -62,7 +62,7 @@ jobs:
           FR=""; [ "$PREVIEW" = "true" ] && FR="--frames=0-239"
           NAME="${COMP}$([ "$PREVIEW" = "true" ] && echo _preview).mp4"
           echo "OUT_FILE=out/$NAME" >> "$GITHUB_ENV"
-          npx remotion render src/index.ts "$COMP" "out/$NAME" --codec=h264 --crf=18 $FR 2>&1 | tee render.log
+          npx remotion render src/index.ts "$COMP" "out/$NAME" --codec=h264 --crf=18 --gl=swangle --concurrency=2 $FR 2>&1 | tee render.log
       - name: Show render log tail on failure
         if: failure()
         shell: bash

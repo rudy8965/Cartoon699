@@ -56,12 +56,19 @@ jobs:
           node scripts/voice.mjs $EP $VOICE $SPEED
           node scripts/sound.mjs $EP
       - name: Render MP4
+        shell: bash
         run: |
           mkdir -p out
           FR=""; [ "$PREVIEW" = "true" ] && FR="--frames=0-239"
           NAME="${COMP}$([ "$PREVIEW" = "true" ] && echo _preview).mp4"
           echo "OUT_FILE=out/$NAME" >> "$GITHUB_ENV"
-          npx remotion render src/index.ts "$COMP" "out/$NAME" --codec=h264 --crf=18 $FR
+          npx remotion render src/index.ts "$COMP" "out/$NAME" --codec=h264 --crf=18 $FR 2>&1 | tee render.log
+      - name: Show render log tail on failure
+        if: failure()
+        shell: bash
+        run: |
+          TAIL=$(tail -n 80 render.log 2>/dev/null | sed 's/\x1b\[[0-9;]*m//g' | sed ':a;N;$!ba;s/%/%25/g;s/\r/%0D/g;s/\n/%0A/g')
+          echo "::error title=render-log-tail::${TAIL}"
       - name: QA check
         run: |
           MODE=shorts; [ "$COMP" = "Long" ] || [ "$COMP" = "Short16x9" ] && MODE=long

@@ -2,3 +2,4 @@ node_modules/
 frames/
 out/
 *.mp4
+render.log

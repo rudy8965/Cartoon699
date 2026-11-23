@@ -20,8 +20,8 @@ au = next((s for s in info["streams"] if s["codec_type"] == "audio"), None)
 errs = []
 if not v: errs.append("tidak ada stream video")
 else:
-    exp = (1280, 720) if a.mode == "long" else (720, 1280)
-    if (v["width"], v["height"]) != exp: errs.append(f"resolusi {v['width']}x{v['height']} != {exp[0]}x{exp[1]}")
+    ok_res = [(1280, 720), (1920, 1080)] if a.mode == "long" else [(720, 1280), (1080, 1920)]
+    if (v["width"], v["height"]) not in ok_res: errs.append(f"resolusi {v['width']}x{v['height']} tidak di {ok_res}")
     if v["codec_name"] != "h264": errs.append(f"codec {v['codec_name']} != h264")
     if v.get("pix_fmt") != "yuv420p": errs.append(f"pix_fmt {v.get('pix_fmt')} != yuv420p")
 dur = float(info["format"]["duration"])

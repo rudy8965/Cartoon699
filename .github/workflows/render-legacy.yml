@@ -1,0 +1,50 @@
+name: Render Legacy Prototype (Playwright)
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Video mode
+        required: true
+        type: choice
+        options: [shorts, long]
+        default: shorts
+      duration:
+        description: Duration in seconds
+        required: true
+        default: "10"
+
+permissions:
+  contents: read
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      VIDEO_MODE: ${{ inputs.mode }}
+      VIDEO_DURATION: ${{ inputs.duration }}
+      PREVIEW: "true"
+    defaults:
+      run:
+        working-directory: legacy
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: legacy/package-lock.json
+      - run: |
+          npm ci
+          npx playwright install --with-deps chromium
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+      - run: npm run render
+      - run: python3 ../tools/qa.py out/preview.mp4 --mode "$VIDEO_MODE"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: legacy-preview-${{ inputs.mode }}
+          path: legacy/out/*.mp4
+          if-no-files-found: error
+          retention-days: 7

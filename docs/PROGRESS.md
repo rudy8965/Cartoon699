@@ -1,59 +1,41 @@
 # RH CARTOON STUDIO — PROGRESS LOG
 
 Terakhir diperbarui: 2026-11-23 (Sesi 1)
-Status: **Fase 0 siap di branch `v4`, belum dijalankan di GitHub Actions. Belum ada MP4 yang diuji.**
+Status: **Engine Remotion terintegrasi di branch `v4`. Belum di-push, belum dijalankan di GitHub Actions. Belum ada MP4 yang diuji.**
 
-## 1. Repositori
-- Repo kerja V4: `rudy8965/Cartoon699` (README bertuliskan "Cartoon-Studio").
-- `rudy8965/Cartoon-Studio` → 404 dari akses tanpa login (privat atau tidak ada).
-- `rudy8965/Cartoon` adalah prototipe lama (basis kode Fase 0); tidak diubah.
+## Repositori
+- Repo kerja: `rudy8965/Cartoon699` (README: "Cartoon-Studio"). `rudy8965/Cartoon-Studio` → 404 tanpa login.
+- `rudy8965/Cartoon` = prototipe lama, tidak diubah.
 
-## 2. Temuan audit prototipe `rudy8965/Cartoon`
-Kritis:
-1. Folder `SRC/` (huruf besar) vs `index.html` memuat `./src/main.js` → gagal di Linux. **Diperbaiki.**
-2. `render.yml` kosong; 3 run Actions terakhir gagal. **Diperbaiki (workflow baru).**
-3. Env `DURATION` tidak terbaca (`render.mjs` memakai `VIDEO_DURATION`); artifact mencari `*.mp4` di root padahal output di `out/`. **Diperbaiki.**
-4. `npm install` tanpa lockfile, `vite` tak terpakai. **Diperbaiki (`npm ci`, lockfile).**
+## Isi branch v4 (2 commit)
+1. **Fase 0**: perbaikan prototipe Playwright (casing `src/`, workflow, env, artifact, QA).
+2. **Import engine `animated-shorts-skill.zip`**: Remotion 4.0.534 + @react-three/fiber + three 0.170, Kokoro TTS, sound.mjs, episode contoh `ep1` (Short, 64,65 s VO) & `ep1long` (Long, 125,29 s VO), skill `.claude/skills/animated-shorts`.
+   - Prototipe Playwright dipindah ke `legacy/` (workflow: `render-legacy.yml`, hanya manual).
+   - Workflow baru: `render-episode.yml` (preview 8 detik default; otomatis saat push ke `v4`).
+   - `tools/qa.py` menerima 1080p; `tools/expected_duration.py` menghitung durasi yang diharapkan dari `timing.json`.
 
-Belum ada (rencana V4):
-5. Audio / voice-over; durasi masih manual (1–600 s) dan belum mengikuti VO.
-6. Sistem cerita/storyboard; scene masih hard-coded.
-7. Karakter primitif tanpa rig/ekspresi/lip-sync; kamera hampir statis.
-8. Resolusi 720p (target 1080p); render PNG per frame via software GL lambat untuk video panjang (perlu chunk paralel).
-9. Pengujian otomatis kualitas: hanya `tools/qa.py` dasar (resolusi, codec, durasi, audio, frame hitam).
+## Temuan penting
+- Durasi mengikuti VO: `totalFrames = ceil((timing.total + TAIL) * fps)`; TAIL Short 0,7 s, Long 1,2 s. `mix.wav` = VO + 0,7 s (diverifikasi ffprobe). Durasi MP4 yang diharapkan: Short 65,367 s, Long 126,500 s.
+- `kokoro-js` → `onnxruntime-node` mencoba mengunduh binary CUDA saat `npm ci`; gunakan `--onnxruntime-node-install-cuda=skip` (sudah di workflow & README).
+- Untuk preview Remotion `--frames=0-239` (8 s @30fps).
+- Render 3D di CPU (ANGLE/SwiftShader, concurrency 1) lambat: perkirakan puluhan menit sampai beberapa jam untuk Long; timeout job 350 menit.
+- WAV ep1/ep1long (±37 MB) ikut di-commit agar CI tidak bergantung pada unduhan model Kokoro. Opsi `regenerate_audio` tersedia tapi belum teruji.
+- Skill berisi fitur mengunduh Shorts kanal lain untuk "mengukur gaya"; `styles/ricks-clips.md` meniru gaya kanal tertentu. Jangan memakai frame/cerita kanal lain; buat karakter dan cerita sendiri ("Make it yours").
 
-## 3. Rencana V4
-- Fase 0 — Perbaikan pipeline (**selesai dikodekan, menunggu uji di Actions**)
-- Fase 1 — Arsitektur: `engine/`, `stories/*.json`, `characters/`, `environments/`, `pipeline/`, `tools/`, `tests/`
-- Fase 2 — Skema cerita JSON (genre, scene, shot, dialog, emosi, aset)
-- Fase 3 — Audio: durasi dari `ffprobe` VO, mixing/ducking, VO tidak dipotong
-- Fase 4 — Karakter & aset 3D, ekspresi, lip-sync amplitudo
-- Fase 5 — Kamera sinematik (shot library, easing)
-- Fase 6 — Render: preview 10 s dulu, lalu full; chunk paralel; preset 9:16 & 16:9 (1080p)
-- Fase 7 — QA otomatis lengkap
-- Fase 8 — PR ke `main`, MP4 sebagai artifact
+## Teruji di sandbox
+- [x] `npm ci` (dengan skip CUDA), `tsc --noEmit` lulus, `remotion bundle` berhasil
+- [x] `tools/qa.py` & `expected_duration.py` dengan video sintetis (lulus/gagal sesuai harapan)
+- [x] YAML kedua workflow valid
+- [ ] Render Remotion: **tidak bisa** (unduhan Chrome `remotion.media` diblokir sandbox)
+- [ ] Kokoro/voice.mjs: tidak diuji
 
-## 4. Perubahan Fase 0
-- `SRC/` → `src/`; `.gitignore` + `out/`; `package-lock.json`.
-- `render.mjs`: baca `VIDEO_DURATION` atau `DURATION`, mode `--preview` (maks 10 s), port otomatis.
-- `.github/workflows/render.yml`: dispatch (mode, durasi, preview, nama output) + otomatis saat push ke `v4`; QA; upload `out/*.mp4`.
-- `tools/qa.py`: uji dengan video sintetis (lulus untuk video benar, gagal untuk resolusi salah/tanpa audio).
+## Checklist
+- [x] Audit, repo target, Fase 0, import engine
+- [ ] Push `v4`; workflow hijau; preview MP4 diunduh & lulus QA
+- [ ] Render penuh Short, lalu Long; QA lulus
+- [ ] Fase berikutnya: skema cerita universal multi-genre, library karakter/lingkungan, shot library kamera, episode baru "ep2" (cerita sendiri), merge ke `main`
 
-## 5. Batasan sesi 1
-- Tidak ada akses GitHub dari sandbox (tanpa login): push, branch di remote, dan Actions belum dijalankan.
-- Sandbox tidak punya Chromium: render Playwright belum diuji.
-- TTS belum diputuskan (file VO dari pengguna atau layanan TTS).
-
-## 6. Checklist
-- [x] Audit
-- [x] Repo target: Cartoon699
-- [x] Fase 0 dikodekan; skrip QA teruji lokal
-- [ ] Push `v4` & Actions hijau
-- [ ] MP4 preview diunduh & lulus QA
-- [ ] Fase 1–8
-- [ ] MP4 final teruji
-
-## 7. Langkah berikutnya
-1. Push `v4`; workflow "Render Cartoon Video" jalan otomatis (preview).
-2. Periksa log, perbaiki error, unduh artifact, jalankan `python3 tools/qa.py out/<file>.mp4`.
-3. Jika hijau, mulai Fase 1.
+## Langkah berikutnya
+1. Push `v4`. Workflow "Render Episode (Remotion)" jalan otomatis (preview Short).
+2. Kirim hasil/log; perbaiki error; unduh artifact; jalankan QA.
+3. Jika hijau: jalankan Short penuh, lalu Long.

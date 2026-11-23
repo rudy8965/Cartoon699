@@ -54,3 +54,8 @@ Status: **`v4` sudah di-push. Preview Short 8 detik berhasil dirender di GitHub 
 4. Uji `regenerate_audio` (Kokoro) di Actions.
 5. Gaya referensi: terima klip referensi, `measure.py`, `styles/<nama>.md`, cocokkan still.
 6. Cabut token GitHub setelah selesai (pemilik).
+
+## Gaya referensi (sesi 1)
+- Klip referensi pertama (1080x1920, 79 s, siluet hangat "kelir") sudah diukur → `styles/kelir-malam.md` (luminans, warna, caption, pacing, audio -14 LUFS).
+- Ide: komposisi `Kelir` 2D/SVG tanpa WebGL (lebih cepat dirender); belum dibangun/diuji.
+- Hanya gaya yang ditiru; bukan cerita/karakter/judul/akun/frame referensi.

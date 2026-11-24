@@ -21,3 +21,6 @@ python3 tools/qa.py out/Short.mp4 --mode shorts --expect-duration $(python3 tool
 
 ## GitHub Actions
 Actions -> "Render Episode (Remotion)" -> Run workflow (pilih Short/Long, preview 8 detik dulu). MP4 ada di Artifacts.
+
+## Kelir (siluet 2D, voice Indonesia)
+Lihat [docs/KELIR.md](docs/KELIR.md) — branch `kelir`.

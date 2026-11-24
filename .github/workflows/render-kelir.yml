@@ -8,6 +8,11 @@ on:
         required: true
         type: boolean
         default: true
+      save_assets:
+        description: Simpan voice.wav, mix.wav, timing.json hasil CI ke branch ini
+        required: true
+        type: boolean
+        default: false
   push:
     branches: [v4]
     paths-ignore: ['docs/**', '**.md']
@@ -84,6 +89,25 @@ jobs:
           git init -q; git checkout -q -b previews; git add .
           git -c user.name=github-actions -c user.email=actions@users.noreply.github.com commit -qm "kelir preview ${GITHUB_SHA}"
           git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" previews
+      - name: Publish MP4 as GitHub Release (full render only)
+        if: env.PREVIEW == 'false'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="kelir1-run${GITHUB_RUN_NUMBER}"
+          gh release create "$TAG" "$OUT_FILE" out/timing.json \
+            --title "Kelir ep1 - run ${GITHUB_RUN_NUMBER}" \
+            --notes "Render penuh Kelir (1080x1920, h264). Commit ${GITHUB_SHA}. QA otomatis lulus." \
+            --target "${GITHUB_SHA}"
+      - name: Save generated assets to branch
+        if: github.event_name == 'workflow_dispatch' && inputs.save_assets
+        run: |
+          git config user.name github-actions
+          git config user.email actions@users.noreply.github.com
+          git add -f public/kelir1/voice.wav public/kelir1/mix.wav episodes/kelir1/timing.json
+          git commit -m "kelir: simpan voice.wav, mix.wav, timing.json hasil CI [skip ci]" || echo "tidak ada perubahan"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
       - name: Upload MP4
         uses: actions/upload-artifact@v4
         with:

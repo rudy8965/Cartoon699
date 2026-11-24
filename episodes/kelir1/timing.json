@@ -1,7 +1,7 @@
 {
- "voice": "fake",
- "engine": "fake",
- "total": 35.81,
+ "voice": "id-ID-ArdiNeural",
+ "engine": "edge-tts",
+ "total": 42.242,
  "shots": [
   {
    "id": 1,
@@ -9,31 +9,31 @@
   },
   {
    "id": 2,
-   "start": 6.1
+   "start": 6.748
   },
   {
    "id": 3,
-   "start": 10.88
+   "start": 12.452
   },
   {
    "id": 4,
-   "start": 17.05
+   "start": 20.482
   },
   {
    "id": 5,
-   "start": 21.41
+   "start": 26.498
   },
   {
    "id": 6,
-   "start": 25.77
+   "start": 30.954
   },
   {
    "id": 7,
-   "start": 30.13
+   "start": 35.482
   },
   {
    "id": 8,
-   "start": 32.61
+   "start": 39.042
   }
  ],
  "lines": [
@@ -42,56 +42,56 @@
    "text": "Setiap malam Jumat, Pak Hasan menyalakan lentera di ujung gang.",
    "em": false,
    "start": 0.9,
-   "end": 5.1
+   "end": 5.748
   },
   {
    "shot": 2,
    "text": "Katanya, lentera itu untuk menuntun orang yang pulang terlambat.",
    "em": false,
-   "start": 6.1,
-   "end": 9.88
+   "start": 6.748,
+   "end": 11.452
   },
   {
    "shot": 3,
    "text": "Malam itu, Ratri baru tiba dari kota.",
    "em": false,
-   "start": 10.88,
-   "end": 13.82
+   "start": 12.452,
+   "end": 16.244
   },
   {
    "shot": 3,
    "text": "Tak seorang pun menjemputnya.",
    "em": false,
-   "start": 14.37,
-   "end": 16.05
+   "start": 16.794,
+   "end": 19.482
   },
   {
    "shot": 4,
    "text": "Gang sudah sepi. Hanya satu cahaya yang menyala.",
    "em": false,
-   "start": 17.05,
-   "end": 20.41
+   "start": 20.482,
+   "end": 25.498
   },
   {
    "shot": 5,
    "text": "Tapi cahaya itu menyala dari arah yang salah.",
    "em": true,
-   "start": 21.41,
-   "end": 24.77
+   "start": 26.498,
+   "end": 29.954
   },
   {
    "shot": 6,
    "text": "Karena Pak Hasan sudah meninggal tiga hari lalu.",
    "em": false,
-   "start": 25.77,
-   "end": 29.13
+   "start": 30.954,
+   "end": 34.482
   },
   {
    "shot": 7,
    "text": "Lalu siapa yang menyalakannya?",
    "em": true,
-   "start": 30.13,
-   "end": 31.81
+   "start": 35.482,
+   "end": 38.242
   }
  ]
 }

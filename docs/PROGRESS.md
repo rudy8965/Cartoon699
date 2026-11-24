@@ -1,7 +1,7 @@
 # RH CARTOON STUDIO — PROGRESS LOG
 
 Terakhir diperbarui: 2026-11-23 (Sesi 1)
-Status: **`v4` sudah di-push. Preview Short 8 detik berhasil dirender di GitHub Actions dan lulus QA otomatis (run 45106259514). Render penuh Short/Long belum dilakukan. Isi visual belum diperiksa manusia/Claude.**
+Status: **Komposisi `Kelir` (2D siluet, cerita orisinal, voice Indonesia) dirender PENUH di GitHub Actions dan lulus QA otomatis (run 45305734285, artifact `kelir-video`, 8,9 MB). Render penuh Short/Long (3D) belum. Audio belum didengar oleh Claude; MP4 belum ditonton pemilik.**
 
 ## Repositori
 - Repo kerja: `rudy8965/Cartoon699` (README: "Cartoon-Studio"). `rudy8965/Cartoon-Studio` → 404 tanpa login.
@@ -59,3 +59,17 @@ Status: **`v4` sudah di-push. Preview Short 8 detik berhasil dirender di GitHub 
 - Klip referensi pertama (1080x1920, 79 s, siluet hangat "kelir") sudah diukur → `styles/kelir-malam.md` (luminans, warna, caption, pacing, audio -14 LUFS).
 - Ide: komposisi `Kelir` 2D/SVG tanpa WebGL (lebih cepat dirender); belum dibangun/diuji.
 - Hanya gaya yang ditiru; bukan cerita/karakter/judul/akun/frame referensi.
+
+## Kelir (sesi 1, lanjutan)
+- `src/kelir/` (art.tsx, scenes.tsx, Kelir.tsx), `episodes/kelir1/script.json` (cerita orisinal "Lentera di Ujung Gang", 8 shot), `scripts/kelir_voice.py` (edge-tts id-ID-ArdiNeural, fallback espeak-ng; timing per baris; mix ambience + ducking + loudnorm), `scripts/kelir_stills.mjs`, workflow `render-kelir.yml`.
+- Hasil run 45305734285 (full): voice engine edge-tts, total VO 42,242 s, video diharapkan 42,867 s, QA lulus (1080x1920, h264, durasi=VO+0,6 s, audio ada, tidak hitam). Loudness mix -14,7 LUFS (referensi -14,0).
+- Kecepatan: render 2D 300 frame 33 s dan video penuh ±90 s (3D: ±5 s/frame). Gaya "Kelir" 38x lebih cepat dibanding 3D di CPU.
+- Pelajaran: `NAME=$( [ cond ] && echo x )` memicu `bash -e` exit saat cond salah -> gunakan if/fi. Langkah apt `espeak-ng` pernah macet 15 menit sekali (transien); sekarang dipisah + timeout + noninteractive.
+- Caption: ukuran 56 px (hasil koreksi dari 47 px berdasarkan lebar karakter referensi ±24,5 px/char).
+- Contact sheet & still tiap shot ada di branch `previews` (shots.jpg, contact.jpg, loudness.txt, timing.json).
+
+## TODO berikutnya
+1. Pemilik: unduh artifact `kelir-video`, tonton/dengarkan; beri catatan (suara, tempo, warna, caption).
+2. Perbaiki animasi karakter (lebih hidup), tambah shot variasi & transisi dissolve.
+3. Naskah multi-episode + sistem genre (library scene).
+4. Tambah referensi lain untuk gaya lain.

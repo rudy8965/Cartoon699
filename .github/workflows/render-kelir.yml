@@ -58,8 +58,9 @@ jobs:
       - name: Render MP4
         shell: bash
         run: |
-          FR=""; [ "$PREVIEW" = "true" ] && FR="--frames=0-299"
-          NAME="Kelir$([ "$PREVIEW" = "true" ] && echo _preview).mp4"
+          FR=""; SUF=""
+          if [ "$PREVIEW" = "true" ]; then FR="--frames=0-299"; SUF="_preview"; fi
+          NAME="Kelir${SUF}.mp4"
           echo "OUT_FILE=out/$NAME" >> "$GITHUB_ENV"
           npx remotion render src/index.ts Kelir "out/$NAME" --codec=h264 --crf=18 --gl=swangle --concurrency=4 $FR 2>&1 | tee render.log
       - name: Show render log tail on failure

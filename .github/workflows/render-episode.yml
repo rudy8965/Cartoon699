@@ -57,8 +57,9 @@ jobs:
         shell: bash
         run: |
           mkdir -p out
-          FR=""; [ "$PREVIEW" = "true" ] && FR="--frames=0-239"
-          NAME="${COMP}$([ "$PREVIEW" = "true" ] && echo _preview).mp4"
+          FR=""; SUF=""
+          if [ "$PREVIEW" = "true" ]; then FR="--frames=0-239"; SUF="_preview"; fi
+          NAME="${COMP}${SUF}.mp4"
           echo "OUT_FILE=out/$NAME" >> "$GITHUB_ENV"
           npx remotion render src/index.ts "$COMP" "out/$NAME" --codec=h264 --crf=18 --gl=swangle --concurrency=2 $FR 2>&1 | tee render.log
       - name: Show render log tail on failure

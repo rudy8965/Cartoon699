@@ -19,9 +19,6 @@ on:
         required: true
         type: boolean
         default: false
-  push:
-    branches: [v4]
-    paths-ignore: ['docs/**', '**.md']
 
 permissions:
   contents: write

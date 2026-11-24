@@ -73,3 +73,8 @@ Status: **Komposisi `Kelir` (2D siluet, cerita orisinal, voice Indonesia) dirend
 2. Perbaiki animasi karakter (lebih hidup), tambah shot variasi & transisi dissolve.
 3. Naskah multi-episode + sistem genre (library scene).
 4. Tambah referensi lain untuk gaya lain.
+
+## Kelir tersimpan di branch `kelir` (sesi 1)
+- Branch `kelir` berisi semua yang dibutuhkan: kode, naskah, timing asli (edge-tts), `voice.wav` + `mix.wav` hasil CI, `requirements.txt`, `docs/KELIR.md`, workflow, skrip QA, angka gaya (`styles/kelir-malam.md`). Klip referensi dan frame-nya sengaja tidak disimpan (hak cipta pemilik asli).
+- MP4 hasil render penuh: GitHub Release `kelir1-run5` (unduhan permanen): https://github.com/rudy8965/Cartoon699/releases/tag/kelir1-run5 . Terverifikasi dari sandbox: 1080x1920, h264, 30 fps, AAC 48 kHz stereo, 42,88 s; `tools/qa.py` lulus (durasi diharapkan 42,867 s).
+- Workflow `render-kelir.yml`: input `preview`, `save_assets`; render penuh otomatis membuat Release.

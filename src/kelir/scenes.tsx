@@ -32,8 +32,8 @@ export const house: React.FC<SceneProps> = ({ frame }) => (
     <Backdrop mode="night" glow={[540, 1000]} frame={frame} />
     <Layer>
       <Moon x={810} y={380} />
-      <Tree x={900} y={GY} s={1.15} />
-      <House x={430} y={GY} s={1.0} frame={frame} />
+      <Tree x={985} y={GY} s={0.95} />
+      <House x={400} y={GY} s={0.95} frame={frame} />
       <Fog frame={frame} />
     </Layer>
   </>

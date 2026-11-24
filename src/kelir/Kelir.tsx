@@ -76,7 +76,7 @@ const Captions: React.FC = () => {
     <div
       style={{
         position: "absolute", top: 1340, left: 50, width: 980, textAlign: "center",
-        fontFamily: sans, fontWeight: 500, fontSize: 47, lineHeight: "64px",
+        fontFamily: sans, fontWeight: 500, fontSize: 56, lineHeight: "64px",
         color: ln.em ? "#dfa351" : "#e9ddc2", opacity: a, textShadow: "0 2px 14px rgba(0,0,0,0.75)",
       }}
     >

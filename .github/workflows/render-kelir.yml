@@ -76,7 +76,7 @@ jobs:
         if: always()
         continue-on-error: true
         run: |
-          [ -f "$OUT_FILE" ] && ffmpeg -v error -y -i "$OUT_FILE" -vf "fps=1/2,scale=270:-1,tile=5x2" -frames:v 1 out/contact.jpg || true
+          [ -f "$OUT_FILE" ] && ffmpeg -v error -y -i "$OUT_FILE" -vf "fps=1/2.2,scale=216:-1,tile=5x4" -frames:v 1 out/contact.jpg || true
           [ -f "$OUT_FILE" ] && ffmpeg -v info -i "$OUT_FILE" -af ebur128=peak=true -vn -f null - 2>&1 | grep -A8 Summary | grep -E "I:|LRA:|Peak:" > out/loudness.txt || true
           cp episodes/kelir1/timing.json out/timing.json
           D=$(mktemp -d); cp -f out/*.jpg out/loudness.txt out/timing.json "$D"/ 2>/dev/null || true; cd "$D"

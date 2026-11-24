@@ -1,8 +1,8 @@
 import React from "react";
+import { useScene } from "./fmt";
 
 // Warna diukur dari klip referensi (lihat styles/kelir-malam.md)
 export const INK = "#0c0503";
-export const GY = 1250; // garis lantai
 
 const rnd = (n: number) => {
   const x = Math.sin(n * 127.1 + 311.7) * 43758.5453;
@@ -10,54 +10,64 @@ const rnd = (n: number) => {
 };
 
 export const Backdrop: React.FC<{ mode: "warm" | "night"; glow?: [number, number]; frame?: number }> = ({ mode, glow = [540, 820], frame = 0 }) => {
+  const { W, H, GY, k, wide, X, Y } = useScene();
   const warm = mode === "warm";
   const stops = warm
     ? [["0", "#f0c070"], ["0.32", "#d98e3f"], ["0.68", "#7a3c14"], ["1", "#1d0d05"]]
     : [["0", "#6d4b3b"], ["0.4", "#3a2523"], ["0.8", "#170c0b"], ["1", "#0b0402"]];
   const pulse = 1 + 0.015 * Math.sin(frame / 23);
+  const g = wide ? 54 : 64;
   return (
-    <svg width={1080} height={1920} viewBox="0 0 1080 1920" style={{ position: "absolute", inset: 0 }}>
+    <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} style={{ position: "absolute", inset: 0 }}>
       <defs>
-        <radialGradient id="kglow" cx={glow[0]} cy={glow[1]} r={1050 * pulse} gradientUnits="userSpaceOnUse">
+        <radialGradient id="kglow" cx={X(glow[0])} cy={Y(glow[1])} r={(wide ? 1250 : 1050) * pulse} gradientUnits="userSpaceOnUse">
           {stops.map(([o, c]) => <stop key={o} offset={o} stopColor={c} />)}
         </radialGradient>
-        <pattern id="kgrid" width="64" height="64" patternUnits="userSpaceOnUse">
-          <path d="M64 0H0V64" fill="none" stroke={warm ? "#6b3a14" : "#2a1a14"} strokeOpacity={warm ? 0.3 : 0.5} strokeWidth="2" />
+        <pattern id="kgrid" width={g} height={g} patternUnits="userSpaceOnUse">
+          <path d={`M${g} 0H0V${g}`} fill="none" stroke={warm ? "#6b3a14" : "#2a1a14"} strokeOpacity={warm ? 0.3 : 0.5} strokeWidth="2" />
         </pattern>
         <linearGradient id="kfloor" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0" stopColor="#1a0c06" />
           <stop offset="1" stopColor="#040101" />
         </linearGradient>
       </defs>
-      <rect width="1080" height="1920" fill="url(#kglow)" />
-      <rect width="1080" height={GY} fill="url(#kgrid)" />
-      <rect y={GY} width="1080" height={1920 - GY} fill="url(#kfloor)" />
+      <rect width={W} height={H} fill="url(#kglow)" />
+      <rect width={W} height={GY} fill="url(#kgrid)" />
+      <rect y={GY} width={W} height={H - GY} fill="url(#kfloor)" />
     </svg>
   );
 };
 
-export const Vignette: React.FC = () => (
-  <svg width={1080} height={1920} viewBox="0 0 1080 1920" style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
-    <defs>
-      <radialGradient id="kvig" cx="540" cy="900" r="1100" gradientUnits="userSpaceOnUse">
-        <stop offset="0.45" stopColor="#050201" stopOpacity="0" />
-        <stop offset="1" stopColor="#050201" stopOpacity="0.9" />
-      </radialGradient>
-    </defs>
-    <rect width="1080" height="1920" fill="url(#kvig)" />
-  </svg>
-);
+export const Vignette: React.FC = () => {
+  const { W, H, GY } = useScene();
+  return (
+    <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
+      <defs>
+        <radialGradient id="kvig" cx={W / 2} cy={GY * 0.72} r={Math.max(W, H) * 0.58} gradientUnits="userSpaceOnUse">
+          <stop offset="0.45" stopColor="#050201" stopOpacity="0" />
+          <stop offset="1" stopColor="#050201" stopOpacity="0.9" />
+        </radialGradient>
+      </defs>
+      <rect width={W} height={H} fill="url(#kvig)" />
+    </svg>
+  );
+};
 
-export const Dust: React.FC<{ frame: number; n?: number }> = ({ frame, n = 30 }) => (
-  <svg width={1080} height={1920} viewBox="0 0 1080 1920" style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
-    {Array.from({ length: n }, (_, i) => {
-      const x = (rnd(i) * 1080 + Math.sin(frame / (40 + i) + i) * 18 + frame * (0.12 + rnd(i + 9) * 0.2)) % 1080;
-      const y = (1500 - ((rnd(i + 3) * 1500 + frame * (0.25 + rnd(i + 5) * 0.45)) % 1500) + 100);
-      const r = 1.3 + rnd(i + 7) * 2.6;
-      return <circle key={i} cx={x} cy={y} r={r} fill="#f3d9a0" opacity={0.18 + rnd(i + 11) * 0.4} />;
-    })}
-  </svg>
-);
+export const Dust: React.FC<{ frame: number; n?: number }> = ({ frame, n = 30 }) => {
+  const { W, H } = useScene();
+  const span = H * 0.78;
+  const cnt = W > H ? Math.round(n * 1.6) : n;
+  return (
+    <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
+      {Array.from({ length: cnt }, (_, i) => {
+        const x = (rnd(i) * W + Math.sin(frame / (40 + i) + i) * 18 + frame * (0.12 + rnd(i + 9) * 0.2)) % W;
+        const y = H * 0.82 - ((rnd(i + 3) * span + frame * (0.25 + rnd(i + 5) * 0.45)) % span);
+        const r = 1.3 + rnd(i + 7) * 2.6;
+        return <circle key={i} cx={x} cy={y} r={r} fill="#f3d9a0" opacity={0.18 + rnd(i + 11) * 0.4} />;
+      })}
+    </svg>
+  );
+};
 
 // ---------- siluet ----------
 const Glow: React.FC<{ id: string; color?: string }> = ({ id, color = "#ffcf7a" }) => (
@@ -114,25 +124,28 @@ export const Lantern: React.FC<{ x: number; y: number; s?: number; frame?: numbe
   );
 };
 
-export const Figure: React.FC<{ x: number; y: number; s?: number; walk?: number; suitcase?: boolean; flip?: boolean; tilt?: number }> = ({ x, y, s = 1, walk = 0, suitcase = false, flip = false, tilt = 0 }) => {
+export const Figure: React.FC<{ x: number; y: number; s?: number; walk?: number; suitcase?: boolean; flip?: boolean; tilt?: number; kind?: "woman" | "man"; stoop?: boolean; cane?: boolean }> = ({ x, y, s = 1, walk = 0, suitcase = false, flip = false, tilt = 0, kind = "woman", stoop = false, cane = false }) => {
   const sw = Math.sin(walk) * 14;
+  const man = kind === "man";
   return (
     <g transform={`translate(${x},${y}) scale(${flip ? -s : s},${s})`} fill={INK} stroke={INK}>
-      <path d="M-40 -172 L40 -172 L32 -92 L54 0 L-54 0 L-32 -92 Z" stroke="none" />
-      <line x1={-30 + sw} y1={0} x2={-26} y2={-8} strokeWidth={0} />
-      <g transform={`rotate(${tilt} 0 -205)`}>
-        <rect x={-9} y={-196} width={18} height={30} stroke="none" />
-        <circle cx={0} cy={-212} r={30} stroke="none" />
-        <circle cx={-24} cy={-226} r={17} stroke="none" />
-      </g>
-      <line x1={-42} y1={-168} x2={-52 - sw} y2={-92} strokeWidth={17} strokeLinecap="round" />
-      <line x1={42} y1={-168} x2={52 + sw} y2={-92} strokeWidth={17} strokeLinecap="round" />
-      {suitcase ? (
-        <g stroke="none">
-          <rect x={44} y={-100} width={70} height={52} rx={6} />
-          <path d="M62 -100 V-114 H96 V-100" fill="none" stroke={INK} strokeWidth={7} />
+      <g transform={stoop ? "rotate(-7 0 0)" : undefined}>
+        <path d={man ? "M-46 -172 L46 -172 L40 -92 L50 0 L-50 0 L-40 -92 Z" : "M-40 -172 L40 -172 L32 -92 L54 0 L-54 0 L-32 -92 Z"} stroke="none" />
+        <g transform={`rotate(${tilt + (stoop ? 12 : 0)} 0 -205)`}>
+          <rect x={-9} y={-196} width={18} height={30} stroke="none" />
+          <circle cx={0} cy={-212} r={30} stroke="none" />
+          {man ? <rect x={-24} y={-248} width={48} height={22} rx={5} stroke="none" /> : <circle cx={-24} cy={-226} r={17} stroke="none" />}
         </g>
-      ) : null}
+        <line x1={-42} y1={-168} x2={-52 - sw} y2={-92} strokeWidth={17} strokeLinecap="round" />
+        <line x1={42} y1={-168} x2={52 + sw} y2={-92} strokeWidth={17} strokeLinecap="round" />
+        {suitcase ? (
+          <g stroke="none">
+            <rect x={44} y={-100} width={70} height={52} rx={6} />
+            <path d="M62 -100 V-114 H96 V-100" fill="none" stroke={INK} strokeWidth={7} />
+          </g>
+        ) : null}
+      </g>
+      {cane ? <line x1={66} y1={-98} x2={78} y2={0} strokeWidth={9} strokeLinecap="round" /> : null}
     </g>
   );
 };
@@ -162,8 +175,3 @@ export const Door: React.FC<{ x: number; y: number; w?: number; h?: number; leak
     {leak ? <rect x={x + 6} y={y - 8} width={w - 12} height={6} fill="#f2b45a" opacity={0.6 + 0.2 * Math.sin(frame / 5)} /> : null}
   </g>
 );
-
-export const Wall: React.FC<{ side: "l" | "r" }> = ({ side }) => {
-  const pts = side === "l" ? "0,260 380,760 380,1170 0,1500" : "1080,260 700,760 700,1170 1080,1500";
-  return <polygon points={pts} fill={INK} />;
-};

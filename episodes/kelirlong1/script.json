@@ -1,0 +1,612 @@
+{
+ "title": "LENTERA DI UJUNG GANG",
+ "part": "1–3",
+ "next": "4",
+ "voice": "id-ID-ArdiNeural",
+ "rate": "-8%",
+ "pitch": "-4Hz",
+ "shots": [
+  {
+   "id": 1,
+   "scene": "house",
+   "cam": {
+    "s": [
+     1.0,
+     1.1
+    ],
+    "x": [
+     0,
+     -25
+    ],
+    "y": [
+     0,
+     15
+    ],
+    "o": [
+     50,
+     60
+    ]
+   },
+   "lines": [
+    {
+     "t": "Setiap malam Jumat, Pak Hasan menyalakan lentera di ujung gang."
+    }
+   ]
+  },
+  {
+   "id": 2,
+   "scene": "alley",
+   "cam": {
+    "s": [
+     1.0,
+     1.2
+    ],
+    "x": [
+     0,
+     0
+    ],
+    "y": [
+     0,
+     0
+    ],
+    "o": [
+     50,
+     58
+    ]
+   },
+   "lines": [
+    {
+     "t": "Katanya, lentera itu untuk menuntun orang yang pulang terlambat."
+    }
+   ]
+  },
+  {
+   "id": 3,
+   "scene": "room",
+   "cam": {
+    "s": [
+     1.02,
+     1.09
+    ],
+    "x": [
+     14,
+     -10
+    ],
+    "y": [
+     0,
+     0
+    ],
+    "o": [
+     50,
+     60
+    ]
+   },
+   "lines": [
+    {
+     "t": "Malam itu, Ratri baru tiba dari kota."
+    },
+    {
+     "t": "Tak seorang pun menjemputnya."
+    }
+   ]
+  },
+  {
+   "id": 4,
+   "scene": "walk",
+   "cam": {
+    "s": [
+     1.08,
+     1.0
+    ],
+    "x": [
+     24,
+     -24
+    ],
+    "y": [
+     0,
+     0
+    ],
+    "o": [
+     50,
+     62
+    ]
+   },
+   "lines": [
+    {
+     "t": "Gang sudah sepi. Hanya satu cahaya yang menyala."
+    }
+   ]
+  },
+  {
+   "id": 5,
+   "scene": "lantern",
+   "cam": {
+    "s": [
+     1.0,
+     1.16
+    ],
+    "x": [
+     0,
+     0
+    ],
+    "y": [
+     0,
+     0
+    ],
+    "o": [
+     50,
+     40
+    ]
+   },
+   "lines": [
+    {
+     "t": "Tapi cahaya itu menyala dari arah yang salah.",
+     "em": true
+    }
+   ]
+  },
+  {
+   "id": 6,
+   "scene": "door",
+   "cam": {
+    "s": [
+     1.0,
+     1.1
+    ],
+    "x": [
+     0,
+     0
+    ],
+    "y": [
+     0,
+     0
+    ],
+    "o": [
+     50,
+     55
+    ]
+   },
+   "lines": [
+    {
+     "t": "Karena Pak Hasan sudah meninggal tiga hari lalu."
+    }
+   ]
+  },
+  {
+   "id": 7,
+   "scene": "window",
+   "cam": {
+    "s": [
+     1.0,
+     1.12
+    ],
+    "x": [
+     0,
+     0
+    ],
+    "y": [
+     0,
+     0
+    ],
+    "o": [
+     50,
+     45
+    ]
+   },
+   "lines": [
+    {
+     "t": "Lalu siapa yang menyalakannya?",
+     "em": true
+    }
+   ]
+  },
+  {
+   "id": 8,
+   "scene": "hall",
+   "cam": {
+    "s": [
+     1.0,
+     1.08
+    ],
+    "x": [
+     -10,
+     10
+    ],
+    "y": [
+     0,
+     0
+    ],
+    "o": [
+     45,
+     60
+    ]
+   },
+   "lines": [
+    {
+     "t": "Esok paginya, Ratri bertanya pada Bu Lastri, tetangga sebelah."
+    }
+   ]
+  },
+  {
+   "id": 9,
+   "scene": "hall",
+   "cam": {
+    "s": [
+     1.06,
+     1.0
+    ],
+    "x": [
+     8,
+     -8
+    ],
+    "y": [
+     0,
+     0
+    ],
+    "o": [
+     60,
+     60
+    ]
+   },
+   "lines": [
+    {
+     "t": "Bu Lastri tidak menjawab. Ia hanya menatap tehnya yang sudah dingin."
+    }
+   ]
+  },
+  {
+   "id": 10,
+   "scene": "hall",
+   "cam": {
+    "s": [
+     1.0,
+     1.12
+    ],
+    "x": [
+     0,
+     0
+    ],
+    "y": [
+     0,
+     0
+    ],
+    "o": [
+     70,
+     55
+    ]
+   },
+   "lines": [
+    {
+     "t": "Sejak Pak Hasan pergi, katanya, lentera itu menyala sendiri setiap malam."
+    }
+   ]
+  },
+  {
+   "id": 11,
+   "scene": "well",
+   "cam": {
+    "s": [
+     1.0,
+     1.1
+    ],
+    "x": [
+     0,
+     0
+    ],
+    "y": [
+     0,
+     0
+    ],
+    "o": [
+     50,
+     60
+    ]
+   },
+   "lines": [
+    {
+     "t": "Anak-anak kampung bilang, nyalanya suka berpindah."
+    },
+    {
+     "t": "Kadang di gang, kadang di dekat sumur tua."
+    }
+   ]
+  },
+  {
+   "id": 12,
+   "scene": "well",
+   "cam": {
+    "s": [
+     1.1,
+     1.0
+    ],
+    "x": [
+     0,
+     0
+    ],
+    "y": [
+     0,
+     0
+    ],
+    "o": [
+     50,
+     50
+    ]
+   },
+   "lines": [
+    {
+     "t": "Dan setiap nyalanya berpindah, ada satu rumah yang kehilangan penghuninya.",
+     "em": true
+    }
+   ]
+  },
+  {
+   "id": 13,
+   "scene": "graveyard",
+   "cam": {
+    "s": [
+     1.0,
+     1.1
+    ],
+    "x": [
+     -20,
+     10
+    ],
+    "y": [
+     0,
+     0
+    ],
+    "o": [
+     50,
+     60
+    ]
+   },
+   "lines": [
+    {
+     "t": "Sore itu, Ratri pergi ke makam Pak Hasan."
+    }
+   ]
+  },
+  {
+   "id": 14,
+   "scene": "tomb",
+   "cam": {
+    "s": [
+     1.0,
+     1.14
+    ],
+    "x": [
+     0,
+     0
+    ],
+    "y": [
+     0,
+     0
+    ],
+    "o": [
+     40,
+     70
+    ]
+   },
+   "lines": [
+    {
+     "t": "Di atas nisannya, tergeletak sebuah korek api yang masih hangat.",
+     "em": true
+    }
+   ]
+  },
+  {
+   "id": 15,
+   "scene": "tomb",
+   "cam": {
+    "s": [
+     1.14,
+     1.04
+    ],
+    "x": [
+     0,
+     0
+    ],
+    "y": [
+     0,
+     0
+    ],
+    "o": [
+     40,
+     70
+    ]
+   },
+   "lines": [
+    {
+     "t": "Padahal tidak ada jejak kaki lain di tanah yang basah."
+    }
+   ]
+  },
+  {
+   "id": 16,
+   "scene": "walk",
+   "cam": {
+    "s": [
+     1.0,
+     1.08
+    ],
+    "x": [
+     -20,
+     20
+    ],
+    "y": [
+     0,
+     0
+    ],
+    "o": [
+     50,
+     62
+    ]
+   },
+   "lines": [
+    {
+     "t": "Malam itu, Ratri menunggu di ujung gang."
+    }
+   ]
+  },
+  {
+   "id": 17,
+   "scene": "lantern",
+   "cam": {
+    "s": [
+     1.16,
+     1.0
+    ],
+    "x": [
+     0,
+     0
+    ],
+    "y": [
+     0,
+     0
+    ],
+    "o": [
+     50,
+     40
+    ]
+   },
+   "lines": [
+    {
+     "t": "Tepat tengah malam, api lentera bergerak sendiri."
+    }
+   ]
+  },
+  {
+   "id": 18,
+   "scene": "well",
+   "cam": {
+    "s": [
+     1.0,
+     1.15
+    ],
+    "x": [
+     0,
+     0
+    ],
+    "y": [
+     0,
+     0
+    ],
+    "o": [
+     50,
+     50
+    ]
+   },
+   "lines": [
+    {
+     "t": "Ia mengikutinya, melewati pagar, melewati sumur, sampai berhenti di depan rumahnya sendiri."
+    }
+   ]
+  },
+  {
+   "id": 19,
+   "scene": "door",
+   "cam": {
+    "s": [
+     1.1,
+     1.0
+    ],
+    "x": [
+     0,
+     0
+    ],
+    "y": [
+     0,
+     0
+    ],
+    "o": [
+     50,
+     55
+    ]
+   },
+   "lines": [
+    {
+     "t": "Pintu rumah Ratri terbuka sedikit. Dari dalam, terdengar bunyi korek api dinyalakan."
+    }
+   ]
+  },
+  {
+   "id": 20,
+   "scene": "windowMan",
+   "cam": {
+    "s": [
+     1.0,
+     1.1
+    ],
+    "x": [
+     0,
+     0
+    ],
+    "y": [
+     0,
+     0
+    ],
+    "o": [
+     50,
+     45
+    ]
+   },
+   "lines": [
+    {
+     "t": "Di jendela, bayangan seorang lelaki tua berdiri membelakanginya."
+    }
+   ]
+  },
+  {
+   "id": 21,
+   "scene": "windowMan",
+   "cam": {
+    "s": [
+     1.1,
+     1.2
+    ],
+    "x": [
+     0,
+     0
+    ],
+    "y": [
+     0,
+     0
+    ],
+    "o": [
+     50,
+     40
+    ]
+   },
+   "lines": [
+    {
+     "t": "Pulanglah, Nak, bisiknya. Aku sudah lama menunggumu.",
+     "em": true
+    }
+   ]
+  },
+  {
+   "id": 22,
+   "scene": "end",
+   "cam": {
+    "s": [
+     1.0,
+     1.0
+    ],
+    "x": [
+     0,
+     0
+    ],
+    "y": [
+     0,
+     0
+    ],
+    "o": [
+     50,
+     55
+    ]
+   },
+   "lines": [],
+   "hold": 3.5
+  }
+ ]
+}

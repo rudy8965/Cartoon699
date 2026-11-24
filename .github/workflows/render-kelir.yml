@@ -3,6 +3,12 @@ name: Render Kelir (2D siluet, voice Indonesia)
 on:
   workflow_dispatch:
     inputs:
+      format:
+        description: "short = 9:16 (1080x1920), long = 16:9 (1920x1080)"
+        required: true
+        type: choice
+        options: [short, long]
+        default: short
       preview:
         description: Preview only (first 10 seconds)
         required: true
@@ -23,8 +29,13 @@ permissions:
 jobs:
   render:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 180
     env:
+      FORMAT: ${{ inputs.format == 'long' && 'long' || 'short' }}
+      EP: ${{ inputs.format == 'long' && 'kelirlong1' || 'kelir1' }}
+      COMP: ${{ inputs.format == 'long' && 'KelirLong' || 'Kelir' }}
+      SHOTCOMP: ${{ inputs.format == 'long' && 'KelirLongShot' || 'KelirShot' }}
+      MODE: ${{ inputs.format == 'long' && 'long' || 'shorts' }}
       PREVIEW: ${{ github.event_name == 'workflow_dispatch' && !inputs.preview && 'false' || 'true' }}
     steps:
       - uses: actions/checkout@v4
@@ -48,26 +59,27 @@ jobs:
         env:
           DEBIAN_FRONTEND: noninteractive
         run: |
-          python -m pip install edge-tts
+          python -m pip install -r requirements.txt
           sudo apt-get install -y --no-install-recommends espeak-ng-data libespeak-ng1 espeak-ng
       - name: Install dependencies
         run: npm ci --onnxruntime-node-install-cuda=skip
       - name: Voice-over + timing + mix
-        run: python3 scripts/kelir_voice.py kelir1
+        run: python3 scripts/kelir_voice.py "$EP"
       - name: Typecheck
         run: npx tsc --noEmit
       - name: Stills per shot
         run: |
-          node scripts/kelir_stills.mjs 45
-          ffmpeg -v error -y -i out/stills/%d.png -vf "scale=270:-1,tile=4x2" -frames:v 1 out/shots.jpg
+          node scripts/kelir_stills.mjs "$EP" "$SHOTCOMP" 45
+          if [ "$FORMAT" = "long" ]; then TILE="scale=320:-1,tile=4x6"; else TILE="scale=270:-1,tile=4x2"; fi
+          ffmpeg -v error -y -i out/stills/%d.png -vf "$TILE" -frames:v 1 "out/shots_${EP}.jpg"
       - name: Render MP4
         shell: bash
         run: |
           FR=""; SUF=""
           if [ "$PREVIEW" = "true" ]; then FR="--frames=0-299"; SUF="_preview"; fi
-          NAME="Kelir${SUF}.mp4"
+          NAME="${COMP}${SUF}.mp4"
           echo "OUT_FILE=out/$NAME" >> "$GITHUB_ENV"
-          npx remotion render src/index.ts Kelir "out/$NAME" --codec=h264 --crf=18 --gl=swangle --concurrency=4 $FR 2>&1 | tee render.log
+          npx remotion render src/index.ts "$COMP" "out/$NAME" --codec=h264 --crf=18 --gl=swangle --concurrency=4 $FR 2>&1 | tee render.log
       - name: Show render log tail on failure
         if: failure()
         shell: bash
@@ -76,18 +88,19 @@ jobs:
           echo "::error title=render-log-tail::${TAIL}"
       - name: QA check
         run: |
-          if [ "$PREVIEW" = "true" ]; then EXP=10.0; else EXP=$(python3 tools/expected_duration.py Kelir); fi
-          python3 tools/qa.py "$OUT_FILE" --mode shorts --expect-duration "$EXP" --require-audio
+          if [ "$PREVIEW" = "true" ]; then EXP=10.0; else EXP=$(python3 tools/expected_duration.py "$COMP"); fi
+          python3 tools/qa.py "$OUT_FILE" --mode "$MODE" --expect-duration "$EXP" --require-audio
       - name: Contact sheet + audio report
         if: always()
         continue-on-error: true
         run: |
-          [ -f "$OUT_FILE" ] && ffmpeg -v error -y -i "$OUT_FILE" -vf "fps=1/2.2,scale=216:-1,tile=5x4" -frames:v 1 out/contact.jpg || true
-          [ -f "$OUT_FILE" ] && ffmpeg -v info -i "$OUT_FILE" -af ebur128=peak=true -vn -f null - 2>&1 | grep -A8 Summary | grep -E "I:|LRA:|Peak:" > out/loudness.txt || true
-          cp episodes/kelir1/timing.json out/timing.json
-          D=$(mktemp -d); cp -f out/*.jpg out/loudness.txt out/timing.json "$D"/ 2>/dev/null || true; cd "$D"
+          if [ "$FORMAT" = "long" ]; then STEP=6; SC=288; else STEP=2.2; SC=216; fi
+          [ -f "$OUT_FILE" ] && ffmpeg -v error -y -i "$OUT_FILE" -vf "fps=1/${STEP},scale=${SC}:-1,tile=5x4" -frames:v 1 "out/contact_${EP}.jpg" || true
+          [ -f "$OUT_FILE" ] && ffmpeg -v info -i "$OUT_FILE" -af ebur128=peak=true -vn -f null - 2>&1 | grep -A8 Summary | grep -E "I:|LRA:|Peak:" > "out/loudness_${EP}.txt" || true
+          cp "episodes/$EP/timing.json" "out/timing_${EP}.json"
+          D=$(mktemp -d); cp -f out/*.jpg out/loudness_*.txt out/timing_*.json "$D"/ 2>/dev/null || true; cd "$D"
           git init -q; git checkout -q -b previews; git add .
-          git -c user.name=github-actions -c user.email=actions@users.noreply.github.com commit -qm "kelir preview ${GITHUB_SHA}"
+          git -c user.name=github-actions -c user.email=actions@users.noreply.github.com commit -qm "kelir preview ${EP} ${GITHUB_SHA}"
           git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" previews
       - name: Publish MP4 as GitHub Release (full render only)
         if: env.PREVIEW == 'false'
@@ -95,23 +108,23 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          TAG="kelir1-run${GITHUB_RUN_NUMBER}"
-          gh release create "$TAG" "$OUT_FILE" out/timing.json \
-            --title "Kelir ep1 - run ${GITHUB_RUN_NUMBER}" \
-            --notes "Render penuh Kelir (1080x1920, h264). Commit ${GITHUB_SHA}. QA otomatis lulus." \
+          TAG="${EP}-run${GITHUB_RUN_NUMBER}"
+          gh release create "$TAG" "$OUT_FILE" "out/timing_${EP}.json" \
+            --title "Kelir ${EP} (${FORMAT}) - run ${GITHUB_RUN_NUMBER}" \
+            --notes "Render penuh Kelir ${FORMAT}. Commit ${GITHUB_SHA}. QA otomatis lulus." \
             --target "${GITHUB_SHA}"
       - name: Save generated assets to branch
         if: github.event_name == 'workflow_dispatch' && inputs.save_assets
         run: |
           git config user.name github-actions
           git config user.email actions@users.noreply.github.com
-          git add -f public/kelir1/voice.wav public/kelir1/mix.wav episodes/kelir1/timing.json
-          git commit -m "kelir: simpan voice.wav, mix.wav, timing.json hasil CI [skip ci]" || echo "tidak ada perubahan"
+          git add -f "public/$EP/voice.wav" "public/$EP/mix.wav" "episodes/$EP/timing.json"
+          git commit -m "kelir: simpan voice.wav, mix.wav, timing.json ($EP) hasil CI [skip ci]" || echo "tidak ada perubahan"
           git push origin "HEAD:${GITHUB_REF_NAME}"
       - name: Upload MP4
         uses: actions/upload-artifact@v4
         with:
-          name: kelir-video
+          name: kelir-${{ env.FORMAT }}
           path: out/*.mp4
           if-no-files-found: error
           retention-days: 7

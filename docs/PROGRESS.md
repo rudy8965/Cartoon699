@@ -78,3 +78,12 @@ Status: **Komposisi `Kelir` (2D siluet, cerita orisinal, voice Indonesia) dirend
 - Branch `kelir` berisi semua yang dibutuhkan: kode, naskah, timing asli (edge-tts), `voice.wav` + `mix.wav` hasil CI, `requirements.txt`, `docs/KELIR.md`, workflow, skrip QA, angka gaya (`styles/kelir-malam.md`). Klip referensi dan frame-nya sengaja tidak disimpan (hak cipta pemilik asli).
 - MP4 hasil render penuh: GitHub Release `kelir1-run5` (unduhan permanen): https://github.com/rudy8965/Cartoon699/releases/tag/kelir1-run5 . Terverifikasi dari sandbox: 1080x1920, h264, 30 fps, AAC 48 kHz stereo, 42,88 s; `tools/qa.py` lulus (durasi diharapkan 42,867 s).
 - Workflow `render-kelir.yml`: input `preview`, `save_assets`; render penuh otomatis membuat Release.
+
+## Video panjang 16:9 (sesi 1, lanjutan)
+- `KelirLong` (1920x1080) memakai scene yang sama lewat pemetaan format; naskah orisinal `kelirlong1` (22 shot, 23 baris, "Lentera di Ujung Gang · Bagian 1–3"); scene baru: graveyard, tomb, well, hall, windowMan.
+- Run penuh 45342081527 sukses: durasi 132,95 s (VO 128,0 s + end card), 1920x1080 h264 30 fps, AAC 48 kHz, -14,2 LUFS, QA lulus; render ±5 menit. MP4: https://github.com/rudy8965/Cartoon699/releases/tag/kelirlong1-run9 (32,9 MB). Terverifikasi dari berkas asli (ffprobe + QA + 12 frame).
+- Regresi Short dicek (preview 45340628519) — tidak ada perubahan visual; loudness -14,0 LUFS.
+- Pelajaran: apt macet sekali lagi (run 45340866211, timeout 8 menit) -> sekarang retry 3x + timeout per perintah.
+
+## Pemindahan ke repositori baru `kelir` — MENUNGGU PEMILIK
+- Token yang ada hanya berlaku untuk Cartoon699, jadi tidak bisa membuat repo (HTTP 403). Pemilik perlu: (1) membuat repo kosong `rudy8965/kelir` (tanpa README), (2) menambahkan repo itu ke akses token (atau token baru), lalu `git push <repo-baru> kelir:main`.

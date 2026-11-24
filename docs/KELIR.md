@@ -1,4 +1,4 @@
-# Kelir — cara membuat video (branch `kelir`)
+# Kelir — cara membuat video (Short 9:16 dan Long 16:9)
 
 Komposisi 2D siluet bergaya "kelir" (layar bayangan hangat), cerita orisinal, voice-over Indonesia.
 Durasi video = durasi voice-over + 0,6 detik (suara tidak pernah terpotong).
@@ -22,6 +22,7 @@ Klip referensi dan frame-nya **tidak** disimpan di repo (hak cipta pemilik aslin
 
 ## Render lewat GitHub Actions
 Actions -> **Render Kelir** -> Run workflow (pilih branch `kelir`):
+- `format`: `short` = 1080x1920 (episode `kelir1`), `long` = 1920x1080 (episode `kelirlong1`, ±133 detik, 22 shot).
 - `preview` dicentang: 10 detik pertama (cek cepat). Tidak dicentang: render penuh.
 - `save_assets` dicentang: voice.wav, mix.wav, timing.json hasil CI disimpan ke branch.
 - Render penuh juga membuat **GitHub Release** berisi `Kelir.mp4` (unduhan permanen). Artifact `kelir-video` hanya 7 hari.
@@ -38,9 +39,18 @@ python3 tools/qa.py out/Kelir.mp4 --mode shorts --expect-duration $(python3 tool
 ```
 Voice-over buatan sendiri: taruh `public/kelir1/voice.wav` (mono 44,1 kHz) + `episodes/kelir1/timing.json`, lalu `python3 scripts/kelir_voice.py kelir1 --mix-only`.
 
+## Video panjang (16:9)
+- Komposisi `KelirLong` (+ `KelirLongShot` untuk still). Semua scene digambar dengan koordinat portrait lalu dipetakan ke format aktif (`src/kelir/fmt.ts`: `PORTRAIT`, `LANDSCAPE`, helper `X()`, `Y()`, skala `k`), jadi satu scene = dua format. Di landscape ada pengisi sisi lebar (rumah/pohon/jendela tambahan).
+- Panjang video = panjang voice-over + 0,6 s. Tidak ada batas durasi di kode; render 133 detik ≈ 5 menit di GitHub Actions. Untuk video lebih panjang cukup tambah shot di `script.json`.
+- Scene tersedia: `house, alley, room, walk, lantern, door, window, windowMan, graveyard, tomb, well, hall, end`. Figur: `kind` woman/man, `stoop`, `cane`.
+
 ## Menambah episode
-Salin `episodes/kelir1` -> `episodes/kelir2`, ubah naskah, dan arahkan impor di `src/kelir/Kelir.tsx` (saat ini tetap ke `kelir1`).
+1. Salin `episodes/kelirlong1` -> `episodes/<id>` dan ubah naskah (`script.json`).
+2. Daftarkan di `src/kelir/episodes.ts` (impor script + timing, buat `EpData`), lalu tambah `<Composition>` di `src/Root.tsx` dan satu baris di `tools/expected_duration.py` dan workflow (EP/COMP).
+3. Jalankan `python3 scripts/kelir_voice.py <id>`.
 
 ## Batasan diketahui
 - edge-tts adalah layanan tidak resmi; bisa berubah. Cadangan: espeak-ng (robotik) atau voice buatan sendiri.
 - Animasi karakter masih sederhana; transisi masih fade-through-black.
+- Di 16:9 objek relatif kecil (skala 0,64) dengan banyak ruang gelap di samping; bisa disesuaikan di `LANDSCAPE.k`.
+- Langkah `apt-get` di runner GitHub kadang macet (gangguan jaringan); workflow memakai timeout + retry 3x.

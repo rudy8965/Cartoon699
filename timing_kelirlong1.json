@@ -1,0 +1,258 @@
+{
+ "voice": "id-ID-ArdiNeural",
+ "engine": "edge-tts",
+ "total": 132.308,
+ "shots": [
+  {
+   "id": 1,
+   "start": 0.0
+  },
+  {
+   "id": 2,
+   "start": 6.748
+  },
+  {
+   "id": 3,
+   "start": 12.452
+  },
+  {
+   "id": 4,
+   "start": 20.482
+  },
+  {
+   "id": 5,
+   "start": 26.498
+  },
+  {
+   "id": 6,
+   "start": 30.954
+  },
+  {
+   "id": 7,
+   "start": 35.482
+  },
+  {
+   "id": 8,
+   "start": 39.242
+  },
+  {
+   "id": 9,
+   "start": 45.546
+  },
+  {
+   "id": 10,
+   "start": 52.33
+  },
+  {
+   "id": 11,
+   "start": 59.09
+  },
+  {
+   "id": 12,
+   "start": 68.32
+  },
+  {
+   "id": 13,
+   "start": 74.432
+  },
+  {
+   "id": 14,
+   "start": 79.44
+  },
+  {
+   "id": 15,
+   "start": 85.192
+  },
+  {
+   "id": 16,
+   "start": 90.056
+  },
+  {
+   "id": 17,
+   "start": 94.824
+  },
+  {
+   "id": 18,
+   "start": 99.904
+  },
+  {
+   "id": 19,
+   "start": 107.984
+  },
+  {
+   "id": 20,
+   "start": 116.112
+  },
+  {
+   "id": 21,
+   "start": 122.032
+  },
+  {
+   "id": 22,
+   "start": 128.808
+  }
+ ],
+ "lines": [
+  {
+   "shot": 1,
+   "text": "Setiap malam Jumat, Pak Hasan menyalakan lentera di ujung gang.",
+   "em": false,
+   "start": 0.9,
+   "end": 5.748
+  },
+  {
+   "shot": 2,
+   "text": "Katanya, lentera itu untuk menuntun orang yang pulang terlambat.",
+   "em": false,
+   "start": 6.748,
+   "end": 11.452
+  },
+  {
+   "shot": 3,
+   "text": "Malam itu, Ratri baru tiba dari kota.",
+   "em": false,
+   "start": 12.452,
+   "end": 16.244
+  },
+  {
+   "shot": 3,
+   "text": "Tak seorang pun menjemputnya.",
+   "em": false,
+   "start": 16.794,
+   "end": 19.482
+  },
+  {
+   "shot": 4,
+   "text": "Gang sudah sepi. Hanya satu cahaya yang menyala.",
+   "em": false,
+   "start": 20.482,
+   "end": 25.498
+  },
+  {
+   "shot": 5,
+   "text": "Tapi cahaya itu menyala dari arah yang salah.",
+   "em": true,
+   "start": 26.498,
+   "end": 29.954
+  },
+  {
+   "shot": 6,
+   "text": "Karena Pak Hasan sudah meninggal tiga hari lalu.",
+   "em": false,
+   "start": 30.954,
+   "end": 34.482
+  },
+  {
+   "shot": 7,
+   "text": "Lalu siapa yang menyalakannya?",
+   "em": true,
+   "start": 35.482,
+   "end": 38.242
+  },
+  {
+   "shot": 8,
+   "text": "Esok paginya, Ratri bertanya pada Bu Lastri, tetangga sebelah.",
+   "em": false,
+   "start": 39.242,
+   "end": 44.546
+  },
+  {
+   "shot": 9,
+   "text": "Bu Lastri tidak menjawab. Ia hanya menatap tehnya yang sudah dingin.",
+   "em": false,
+   "start": 45.546,
+   "end": 51.33
+  },
+  {
+   "shot": 10,
+   "text": "Sejak Pak Hasan pergi, katanya, lentera itu menyala sendiri setiap malam.",
+   "em": false,
+   "start": 52.33,
+   "end": 58.09
+  },
+  {
+   "shot": 11,
+   "text": "Anak-anak kampung bilang, nyalanya suka berpindah.",
+   "em": false,
+   "start": 59.09,
+   "end": 63.17
+  },
+  {
+   "shot": 11,
+   "text": "Kadang di gang, kadang di dekat sumur tua.",
+   "em": false,
+   "start": 63.72,
+   "end": 67.32
+  },
+  {
+   "shot": 12,
+   "text": "Dan setiap nyalanya berpindah, ada satu rumah yang kehilangan penghuninya.",
+   "em": true,
+   "start": 68.32,
+   "end": 73.432
+  },
+  {
+   "shot": 13,
+   "text": "Sore itu, Ratri pergi ke makam Pak Hasan.",
+   "em": false,
+   "start": 74.432,
+   "end": 78.44
+  },
+  {
+   "shot": 14,
+   "text": "Di atas nisannya, tergeletak sebuah korek api yang masih hangat.",
+   "em": true,
+   "start": 79.44,
+   "end": 84.192
+  },
+  {
+   "shot": 15,
+   "text": "Padahal tidak ada jejak kaki lain di tanah yang basah.",
+   "em": false,
+   "start": 85.192,
+   "end": 89.056
+  },
+  {
+   "shot": 16,
+   "text": "Malam itu, Ratri menunggu di ujung gang.",
+   "em": false,
+   "start": 90.056,
+   "end": 93.824
+  },
+  {
+   "shot": 17,
+   "text": "Tepat tengah malam, api lentera bergerak sendiri.",
+   "em": false,
+   "start": 94.824,
+   "end": 98.904
+  },
+  {
+   "shot": 18,
+   "text": "Ia mengikutinya, melewati pagar, melewati sumur, sampai berhenti di depan rumahnya sendiri.",
+   "em": false,
+   "start": 99.904,
+   "end": 106.984
+  },
+  {
+   "shot": 19,
+   "text": "Pintu rumah Ratri terbuka sedikit. Dari dalam, terdengar bunyi korek api dinyalakan.",
+   "em": false,
+   "start": 107.984,
+   "end": 115.112
+  },
+  {
+   "shot": 20,
+   "text": "Di jendela, bayangan seorang lelaki tua berdiri membelakanginya.",
+   "em": false,
+   "start": 116.112,
+   "end": 121.032
+  },
+  {
+   "shot": 21,
+   "text": "Pulanglah, Nak, bisiknya. Aku sudah lama menunggumu.",
+   "em": true,
+   "start": 122.032,
+   "end": 128.008
+  }
+ ]
+}
